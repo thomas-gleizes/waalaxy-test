@@ -1,0 +1,17 @@
+{
+  "name": "waalaxy",
+  "version": "1.0.0",
+  "description": "",
+  "license": "ISC",
+  "workspaces": [
+    "apps/*"
+  ],
+  "scripts": {
+    "dev": "cd apps/server && npm run dev",
+    "start": "cd apps/server && npm run start",
+    "test": ""
+  },
+  "devDependencies": {
+    "prettier": "^3.1.0"
+  }
+}
