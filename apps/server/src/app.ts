@@ -1,11 +1,11 @@
 import express from "express"
 
-console.log("Express()", express)
-
 const app = express()
 const PORT = 3000
 
-app.get("/", (req, res) => {
+app.use(express.static("public"))
+
+app.get("/api", (req, res) => {
   res.send({ hello: "world" })
 })
 
