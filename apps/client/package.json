@@ -4,18 +4,22 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
+    "prepare": "panda codegen",
     "dev": "vite",
     "build": "tsc && vite build && cp dist ../server/public -r",
     "preview": "vite preview"
   },
   "dependencies": {
+    "@tanstack/react-query": "^5.8.6",
     "react": "^18.2.0",
-    "react-dom": "^18.2.0"
+    "react-dom": "^18.2.0",
+    "vite-plugin-svgr": "^4.2.0"
   },
   "peerDependencies": {
     "typescript": "^5.2.2"
   },
   "devDependencies": {
+    "@pandacss/dev": "^0.18.3",
     "@types/react": "^18.2.37",
     "@types/react-dom": "^18.2.15",
     "@vitejs/plugin-react": "^4.2.0",
