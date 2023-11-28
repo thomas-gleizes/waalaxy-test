@@ -4,7 +4,8 @@
   "description": "",
   "license": "ISC",
   "workspaces": [
-    "apps/*"
+    "apps/*",
+    "packages/*"
   ],
   "scripts": {
     "start": "npm run client:build && npm run server:start",
