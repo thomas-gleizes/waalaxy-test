@@ -1,0 +1,10 @@
+{
+  "name": "@waalaxy-test/fifo",
+  "main": "src/index.ts",
+  "dependencies": {
+    "@waalaxy-test/utils": "*"
+  },
+  "devDependencies": {
+    "typescript": "^5.3.0"
+  }
+}

@@ -1,0 +1,7 @@
+{
+  "name": "@waalaxy-test/utils",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.ts",
+  "license": "ISC"
+}
