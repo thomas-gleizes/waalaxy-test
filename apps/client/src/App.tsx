@@ -1,51 +1,75 @@
-import { useEffect, useState } from "react"
+import { ActionType } from "@waalaxy-test/fifo"
 import { css } from "../styled-system/css"
+import { useEffect, useState } from "react"
+import ActionList from "./components/ActionList.tsx"
+import Queue from "./components/Queue.tsx"
 
 const App = () => {
-  const [events, setEvents] = useState<string[]>([])
-  const [connected, setConnected] = useState<boolean>(false)
+  const [actions, setActions] = useState<ActionType[]>([])
+  const [queue, setQueue] = useState<string[]>([])
+
+  const [status, setStatus] = useState<"loading" | "ready" | "error">("loading")
 
   useEffect(() => {
-    const eventSource = new EventSource("http://localhost:8080/api/queue/events")
+    const eventEmitter = new EventSource("/api/queue/events")
 
-    eventSource.onmessage = (event) => {
-      console.log("new message on event source", event)
+    eventEmitter.addEventListener("open", () => {
+      console.log("Event stream connected")
 
-      setEvents((events) => [...events, event.data])
+      eventEmitter.addEventListener("message", (event) => {
+        const data = JSON.parse(event.data)
+
+        setStatus("ready")
+        setQueue(data.queue)
+        setActions(data.actions)
+      })
+
+      eventEmitter.addEventListener("error", () => {
+        console.log("Error connecting to event stream")
+        setStatus("error")
+      })
+    })
+
+    return () => {
+      eventEmitter.close()
     }
-
-    eventSource.onopen = () => {
-      setConnected(true)
-    }
-
-    eventSource.onerror = () => {
-      setConnected(false)
-    }
-
-    console.log("EventSources", eventSource)
   }, [])
 
-  const handleClick = async () => {
-    const data = await fetch("/api/queue").then((resp) => resp.json())
-    console.log("Data", data)
+  const handleAddToQueue = async (action: ActionType) => {
+    const response = await fetch("/api/queue", {
+      method: "POST",
+      body: JSON.stringify({ type: action.type }),
+    })
+
+    if (response.ok) {
+      const data = await response.json()
+      setQueue(data.queue)
+    }
   }
 
   return (
-    <div>
-      Status: {connected ? "Online" : "Offline"}
-      <div>
-        Events: {events.length}
-        <ul>
-          {events.map((event, index) => (
-            <li key={index}>{event}</li>
-          ))}
-        </ul>
-      </div>
-      <div>
-        <button className={css()} onClick={handleClick}>
-          Click me
-        </button>
-      </div>
+    <div className={css({ minH: "screen", w: "screen", bgColor: "gray.50", display: "flex" })}>
+      {status === "ready" ? (
+        <div
+          className={css({
+            display: "flex",
+            justifyContent: "space-evenly",
+            width: "full",
+            my: 20,
+          })}
+        >
+          <div>
+            <ActionList actions={actions} addToQueue={handleAddToQueue} />
+          </div>
+          <div>
+            <Queue queue={queue} />
+          </div>
+        </div>
+      ) : status === "loading" ? (
+        <div>loading ...</div>
+      ) : (
+        <div>error</div>
+      )}
     </div>
   )
 }

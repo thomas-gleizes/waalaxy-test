@@ -1,5 +1,12 @@
 import { randomMinMax } from "@waalaxy-test/utils"
 
+export interface ActionType {
+  type: string
+  maxCredits: number
+  initialCredits: number
+  credits: number
+}
+
 export class Action {
   private readonly _type: string
   private readonly _maxCredits: number
@@ -39,7 +46,7 @@ export class Action {
     this._credits--
   }
 
-  public toJSON() {
+  public toJSON(): ActionType {
     return {
       type: this._type,
       maxCredits: this._maxCredits,
