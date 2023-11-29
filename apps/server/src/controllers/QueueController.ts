@@ -9,17 +9,6 @@ queueManager.addAction("A", 5)
 queueManager.addAction("B", 30)
 queueManager.addAction("C", 40)
 
-queueManager.addToQueue(queueManager.actions()[0])
-queueManager.addToQueue(queueManager.actions()[0])
-queueManager.addToQueue(queueManager.actions()[0])
-queueManager.addToQueue(queueManager.actions()[0])
-queueManager.addToQueue(queueManager.actions()[0])
-queueManager.addToQueue(queueManager.actions()[1])
-queueManager.addToQueue(queueManager.actions()[1])
-queueManager.addToQueue(queueManager.actions()[1])
-queueManager.addToQueue(queueManager.actions()[0])
-queueManager.addToQueue(queueManager.actions()[1])
-
 setInterval(() => {
   try {
     queueManager.executeFirstAction()
@@ -32,7 +21,7 @@ setInterval(() => {
 export const addToQueue = (req: Request, res: Response) => {
   const { action: actionType } = req.body
 
-  const action = queueManager.actions().find((action) => action.type === actionType)
+  const action = queueManager.actions.find((action) => action.type === actionType)
 
   if (!action) return res.status(404).json({ message: "Action not found" })
 
@@ -42,11 +31,11 @@ export const addToQueue = (req: Request, res: Response) => {
 }
 
 export const displayActions = (req: Request, res: Response) => {
-  res.json({ actions: queueManager.actions() })
+  res.json({ actions: queueManager.actions })
 }
 
-export const displayQueueAndCredits = (req: Request, res: Response) => {
-  res.json({ queue: queueManager })
+export const displayQueue = (req: Request, res: Response) => {
+  res.json({ queue: queueManager.queue })
 }
 
 export const eventEmitter = (req: Request, res: Response) => {
