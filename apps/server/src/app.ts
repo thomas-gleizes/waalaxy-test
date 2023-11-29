@@ -7,7 +7,7 @@ const app = express()
 const PORT = 8080
 
 app.use(bodyParser.json())
-app.use(cors())
+app.use(cors({ origin: "*" }))
 app.use(express.static("public"))
 
 app.use((err: unknown, req: Request, res: Response, next: NextFunction) => {

@@ -38,7 +38,7 @@ export const addToQueue = (req: Request, res: Response) => {
 
   queueManager.addToQueue(action)
 
-  res.status(201).json({ queue: queueManager })
+  res.status(201).json(queueManager)
 }
 
 export const displayQueue = (req: Request, res: Response) => {

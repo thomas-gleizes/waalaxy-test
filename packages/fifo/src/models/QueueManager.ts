@@ -8,13 +8,17 @@ export class QueueManager {
   constructor() {
     this._queue = []
     this._actions = new Map<string, Action>()
+    this._lastActionTime = Date.now()
   }
 
   public addAction(type: string, maxCredits: number): Action {
     if (this._actions.has(type)) throw new Error("Action already exists")
 
-    this._actions.set(type, new Action(type, maxCredits))
-    return this._actions.get(type)
+    const action = new Action(type, maxCredits)
+
+    this._actions.set(type, action)
+
+    return action
   }
 
   public addToQueue(action: Action) {
@@ -31,7 +35,7 @@ export class QueueManager {
     if (this._queue.length === 0) throw new Error("No actions in queue")
 
     // on récupère l'action a executé
-    const firstAction = this._actions.get(this._queue.at(0))
+    const firstAction = this._actions.get(this._queue[0])!
 
     // on execute l'action
     firstAction.consumeCredits()
