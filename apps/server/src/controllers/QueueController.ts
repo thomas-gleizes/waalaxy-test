@@ -1,31 +1,52 @@
 import { Request, Response } from "express"
-import { CallAction, Queue, TalkAction } from "@waalaxy-test/fifo"
+import { QueueManager } from "@waalaxy-test/fifo"
 
-const DELAY_ACTONS = 1000 * 60 * 2
+const DELAY_ACTONS = 1000 * 2
 
-const queue = new Queue()
+const queueManager = new QueueManager()
+
+queueManager.addAction("A", 5)
+queueManager.addAction("B", 30)
+queueManager.addAction("C", 40)
+
+queueManager.addToQueue(queueManager.actions()[0])
+queueManager.addToQueue(queueManager.actions()[0])
+queueManager.addToQueue(queueManager.actions()[0])
+queueManager.addToQueue(queueManager.actions()[0])
+queueManager.addToQueue(queueManager.actions()[0])
+queueManager.addToQueue(queueManager.actions()[1])
+queueManager.addToQueue(queueManager.actions()[1])
+queueManager.addToQueue(queueManager.actions()[1])
+queueManager.addToQueue(queueManager.actions()[0])
+queueManager.addToQueue(queueManager.actions()[1])
 
 setInterval(() => {
-  queue.executeFirstAction()
+  try {
+    queueManager.executeFirstAction()
+  } catch (error) {
+    console.error(error.message)
+    queueManager.resetQueue()
+  }
 }, DELAY_ACTONS)
 
 export const addToQueue = (req: Request, res: Response) => {
-  switch (req.body.type) {
-    case "call":
-      queue.addToQueue(new CallAction())
-      break
-    case "talk":
-      queue.addToQueue(new TalkAction())
-      break
-    default:
-      return res.status(400).send()
-  }
+  const { action: actionType } = req.body
 
-  res.status(201).json({ queue })
+  const action = queueManager.actions().find((action) => action.type === actionType)
+
+  if (!action) return res.status(404).json({ message: "Action not found" })
+
+  queueManager.addToQueue(action)
+
+  res.status(201).json({ queue: queueManager })
+}
+
+export const displayActions = (req: Request, res: Response) => {
+  res.json({ actions: queueManager.actions() })
 }
 
 export const displayQueueAndCredits = (req: Request, res: Response) => {
-  res.json({ queue })
+  res.json({ queue: queueManager })
 }
 
 export const eventEmitter = (req: Request, res: Response) => {
@@ -34,14 +55,11 @@ export const eventEmitter = (req: Request, res: Response) => {
   res.setHeader("Cache-Control", "no-cache")
   res.setHeader("Connection", "keep-alive")
 
+  res.write(`data: ${JSON.stringify(queueManager)}\n\n`)
+
   // Envoyer des mises à jour à l'événement toutes les 2 secondes
   const intervalId = setInterval(() => {
-    const payload = {
-      timestamp: Date.now(),
-      queue: queue,
-    }
-
-    res.write(`data: ${JSON.stringify(payload)}\n\n`)
+    res.write(`data: ${JSON.stringify(queueManager)}\n\n`)
   }, DELAY_ACTONS)
 
   // Gérer la déconnexion du client
