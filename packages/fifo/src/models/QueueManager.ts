@@ -33,27 +33,28 @@ export class QueueManager {
     // on récupère l'action a executé
     const firstAction = this._actions.get(this._queue.at(0))
 
-    // on vérifie qu'il reste des crédits
-    if (firstAction.credits === 0) throw new Error("No credits left")
-
     // on execute l'action
     firstAction.consumeCredits()
 
-    // puis on la supprime de la queue
+    // puis, on la supprime de la queue
     this._queue.shift()
 
     // on met à jour la date de la dernière action
     this._lastActionTime = Date.now()
   }
 
-  public actions() {
+  get actions() {
     return Array.from(this._actions.values())
+  }
+
+  get queue() {
+    return this._queue
   }
 
   public resetQueue() {
     // on vérifie si la dernière action a été effectuée il y a plus de 5 minutes
     if (Date.now() - this._lastActionTime > 1000 * 20)
-      this._actions.forEach((action) => action.initCredits())
+      this._actions.forEach((action) => action.resetCredits())
   }
 
   public toJSON() {

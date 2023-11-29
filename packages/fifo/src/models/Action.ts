@@ -7,14 +7,21 @@ export class Action {
   private _credits: number
 
   constructor(type: string, maxCredits: number) {
+    if (maxCredits <= 0) throw new Error("Max credits must be greater than 0")
+
     this._type = type
     this._maxCredits = maxCredits
+
     this.initCredits()
   }
 
-  public initCredits() {
-    this._credits = randomMinMax(this._maxCredits * 0.8, this._maxCredits)
+  private initCredits() {
+    this._credits = randomMinMax(Math.ceil(this._maxCredits * 0.8), this._maxCredits)
     this._initialCredits = this._credits
+  }
+
+  public resetCredits() {
+    this.initCredits()
   }
 
   get type() {
@@ -26,6 +33,8 @@ export class Action {
   }
 
   public consumeCredits() {
+    if (this._credits === 0) throw new Error(`No credits left to action ${this._type}`)
+
     console.log("Executing action", this._type, "with", this._credits, "credits")
     this._credits--
   }
