@@ -3,6 +3,7 @@ import { css } from "../styled-system/css"
 import { useEffect, useState } from "react"
 import ActionList from "./components/ActionList.tsx"
 import Queue from "./components/Queue.tsx"
+import axios from "axios"
 
 const App = () => {
   const [actions, setActions] = useState<ActionType[]>([])
@@ -36,15 +37,9 @@ const App = () => {
   }, [])
 
   const handleAddToQueue = async (action: ActionType) => {
-    const response = await fetch("/api/queue", {
-      method: "POST",
-      body: JSON.stringify({ type: action.type }),
-    })
+    const response = await axios.post("/api/queue", { action: action.type })
 
-    if (response.ok) {
-      const data = await response.json()
-      setQueue(data.queue)
-    }
+    setQueue(response.data.queue)
   }
 
   return (
