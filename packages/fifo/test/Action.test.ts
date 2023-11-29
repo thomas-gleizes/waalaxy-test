@@ -1,6 +1,5 @@
 import { describe, expect, test } from "vitest"
 import { Action } from "../src"
-import { randomMinMax } from "@waalaxy-test/utils"
 
 describe("Action", async () => {
   test("should init", async () => {
