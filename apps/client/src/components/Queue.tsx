@@ -1,5 +1,6 @@
 import { css } from "../../styled-system/css"
 import Card from "./common/Card.tsx"
+import Badge from "./common/Badge.tsx"
 
 interface Props {
   queue: string[]
@@ -22,7 +23,9 @@ const Queue: Component<Props> = ({ queue }) => {
               })}
             >
               <div># {index + 1} </div>
-              <div>{action}</div>
+              <div>
+                <Badge color="primary">{action}</Badge>
+              </div>
             </div>
           ))
         ) : (
