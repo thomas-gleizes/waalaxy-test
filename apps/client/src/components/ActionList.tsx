@@ -60,7 +60,7 @@ const ActionList: Component<Props> = ({ actions, addToQueue }) => {
                 onClick={() => handleAddToQueue(action)}
                 className={styles.button}
               >
-                {mutating === action.type ? "Chargement" : "Ajouté"}
+                {mutating === action.type ? "Chargement" : "Ajouter"}
               </button>
             </div>
           </div>
