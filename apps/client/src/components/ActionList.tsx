@@ -1,6 +1,8 @@
+import { useState } from "react"
+
 import { ActionType } from "@waalaxy-test/fifo"
 import { css } from "../../styled-system/css"
-import { useState } from "react"
+import Card from "./common/Card.tsx"
 
 interface Props {
   actions: ActionType[]
@@ -42,13 +44,7 @@ const ActionList: Component<Props> = ({ actions, addToQueue }) => {
   }
 
   return (
-    <div className={css({ shadow: "lg", p: 5 })}>
-      <div className={css({ borderBottom: "1px solid" })}>
-        <h2 className={css({ fontWeight: "semibold", fontSize: "xl", color: "primary" })}>
-          Liste des actions disponibles
-        </h2>
-      </div>
-
+    <Card title="Liste des actions disponnibles">
       <div className={css({ display: "flex", flexDir: "column" })}>
         {actions.map((action, index) => (
           <div key={index} className={styles.actionRow}>
@@ -70,7 +66,7 @@ const ActionList: Component<Props> = ({ actions, addToQueue }) => {
           </div>
         ))}
       </div>
-    </div>
+    </Card>
   )
 }
 

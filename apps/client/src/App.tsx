@@ -1,9 +1,10 @@
+import { useEffect, useState } from "react"
+import axios from "axios"
+
 import { ActionType } from "@waalaxy-test/fifo"
 import { css } from "../styled-system/css"
-import { useEffect, useState } from "react"
 import ActionList from "./components/ActionList.tsx"
 import Queue from "./components/Queue.tsx"
-import axios from "axios"
 
 const App = () => {
   const [actions, setActions] = useState<ActionType[]>([])
@@ -43,7 +44,15 @@ const App = () => {
   }
 
   return (
-    <div className={css({ minH: "screen", w: "screen", bgColor: "gray.50", display: "flex" })}>
+    <div
+      data-theme="dark"
+      className={css({
+        minH: "screen",
+        w: "screen",
+        bgColor: "gray.800",
+        display: "flex",
+      })}
+    >
       {status === "ready" ? (
         <div
           className={css({
