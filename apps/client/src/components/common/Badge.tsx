@@ -3,7 +3,6 @@ import { css } from "../../../styled-system/css"
 
 interface Props extends HTMLAttributes<HTMLSpanElement> {
   color: string
-
   children: ReactNode
 }
 
