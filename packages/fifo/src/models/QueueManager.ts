@@ -2,8 +2,11 @@ import { Action } from "./Action"
 
 export class QueueManager {
   private readonly _queue: string[]
-  private _actions: Map<string, Action>
+  private readonly _actions: Map<string, Action>
   private _lastActionTime: number
+
+  public static DELAY_ACTONS: number = 1000 * 60 * 2 // 2 minutes
+  public static MAX_DELAY_WITHOUT_ACTION: number = 1000 * 60 * 60 * 24 // 5 minutes
 
   constructor() {
     this._queue = []
@@ -57,7 +60,7 @@ export class QueueManager {
 
   public resetQueue() {
     // on vérifie si la dernière action a été effectuée il y a plus de 5 minutes
-    if (Date.now() - this._lastActionTime > 1000 * 20)
+    if (Date.now() - this._lastActionTime > QueueManager.MAX_DELAY_WITHOUT_ACTION)
       this._actions.forEach((action) => action.resetCredits())
   }
 
