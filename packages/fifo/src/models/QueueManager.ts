@@ -1,4 +1,5 @@
 import { Action } from "./Action"
+import { FifoException } from "./FifoException"
 
 export class QueueManager {
   private readonly _queue: string[]
@@ -15,7 +16,7 @@ export class QueueManager {
   }
 
   public addAction(type: string, maxCredits: number): Action {
-    if (this._actions.has(type)) throw new Error("Action already exists")
+    if (this._actions.has(type)) throw new FifoException("Action already exists")
 
     const action = new Action(type, maxCredits)
 
@@ -26,7 +27,7 @@ export class QueueManager {
 
   public addToQueue(action: Action) {
     if (!this._actions.has(action.type))
-      throw new Error(
+      throw new FifoException(
         "this action doesn't exist in this instance of queue manager. Please add it with method addAction",
       )
 
@@ -35,7 +36,7 @@ export class QueueManager {
 
   public executeFirstAction() {
     // on vérifie qu'il reste des actions dans la queue
-    if (this._queue.length === 0) throw new Error("No actions in queue")
+    if (this._queue.length === 0) throw new FifoException("No actions in queue")
 
     // on récupère l'action a executé
     const firstAction = this._actions.get(this._queue[0])!

@@ -1,4 +1,5 @@
 import { randomMinMax } from "@waalaxy-test/utils"
+import { FifoException } from "./FifoException"
 
 export interface ActionType {
   type: string
@@ -14,7 +15,7 @@ export class Action {
   private _credits: number
 
   constructor(type: string, maxCredits: number) {
-    if (maxCredits <= 0) throw new Error("Max credits must be greater than 0")
+    if (maxCredits <= 0) throw new FifoException("Max credits must be greater than 0")
 
     this._type = type
     this._maxCredits = maxCredits
@@ -40,7 +41,7 @@ export class Action {
   }
 
   public consumeCredits() {
-    if (this._credits === 0) throw new Error(`No credits left to action ${this._type}`)
+    if (this._credits === 0) throw new FifoException(`No credits left to action ${this._type}`)
 
     console.log("Executing action", this._type, "with", this._credits, "credits")
     this._credits--
