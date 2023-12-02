@@ -6,3 +6,5 @@ styled-system
 .env
 
 *.log
+
+.DS_Store
