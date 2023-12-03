@@ -1,5 +1,11 @@
-export default class Exception extends Error {
+export default class Exception {
+  private readonly _message: string
+
   constructor(message: string) {
-    super(message)
+    this._message = message
+  }
+
+  get message(): string {
+    return this._message
   }
 }

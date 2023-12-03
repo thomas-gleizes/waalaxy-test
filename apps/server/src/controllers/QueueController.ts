@@ -1,10 +1,12 @@
 import { Request, Response } from "express"
-import { QueueManager } from "@waalaxy-test/fifo"
 
-import { queueManager } from "../models/queue"
+import { QueueManager } from "@waalaxy-test/fifo"
+import { getUserQueueManagerByUserName } from "../models/user"
 
 export const addToQueue = (req: Request, res: Response) => {
   const { action: actionType } = req.body
+
+  const queueManager = getUserQueueManagerByUserName(req.user.name)
 
   const action = queueManager.actions.find((action) => action.type === actionType)
 
@@ -16,6 +18,8 @@ export const addToQueue = (req: Request, res: Response) => {
 }
 
 export const displayQueue = (req: Request, res: Response) => {
+  const queueManager = getUserQueueManagerByUserName(req.user.name)
+
   res.json({
     queue: queueManager.queue,
     actions: queueManager.actions,
@@ -23,6 +27,8 @@ export const displayQueue = (req: Request, res: Response) => {
 }
 
 export const eventEmitter = (req: Request, res: Response) => {
+  const queueManager = getUserQueueManagerByUserName(req.user.name)
+
   // Définir les en-têtes appropriés pour EventSource
   res.setHeader("Content-Type", "text/event-stream")
   res.setHeader("Cache-Control", "no-cache")
