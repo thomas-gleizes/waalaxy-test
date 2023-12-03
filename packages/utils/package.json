@@ -2,6 +2,7 @@
   "name": "@waalaxy-test/utils",
   "version": "1.0.0",
   "description": "",
+  "types": "index.d.ts",
   "main": "index.ts",
   "license": "ISC"
 }
