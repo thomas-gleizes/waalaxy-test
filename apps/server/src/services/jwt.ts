@@ -1,5 +1,5 @@
 import jwt from "jsonwebtoken"
-import { UserWithoutPassword } from "../../types"
+import { UserWithoutPassword } from "@waalaxy-test/utils"
 import { JWT_SECRET } from "./constants"
 export const signToken = (user: UserWithoutPassword) => {
   return jwt.sign({ user }, JWT_SECRET, { expiresIn: "1d" })

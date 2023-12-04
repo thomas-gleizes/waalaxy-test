@@ -8,6 +8,8 @@ import { signToken } from "../services/jwt"
 export const login = async (req: Request, res: Response) => {
   const user = findUserByName(req.body.username)
 
+  if (!user) throw new BadRequestException("Login or password incorrect")
+
   if (await comparePassword(user.password, req.body.password))
     throw new BadRequestException("Login or password incorrect")
 
@@ -26,7 +28,7 @@ export const register = async (req: Request, res: Response) => {
 
   delete user.password
 
-  return res.status(201).json({ user: { name: req.body.username }, token: await signToken(user) })
+  return res.status(201).json({ user, token: await signToken(user) })
 }
 
 export const logout = (req: Request, res: Response) => {
