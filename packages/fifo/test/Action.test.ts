@@ -10,8 +10,6 @@ describe("Action", async () => {
   test("should have correctly credits", async () => {
     const action = new Action("A", 10)
 
-    console.log("Action.credits", action.credits)
-
     expect(action.credits).toBeLessThanOrEqual(10)
     expect(action.credits).toBeGreaterThanOrEqual(8)
   })
