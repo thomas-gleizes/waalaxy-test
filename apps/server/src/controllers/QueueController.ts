@@ -1,12 +1,12 @@
 import { Request, Response } from "express"
 
-import { QueueManager } from "@waalaxy-test/fifo"
-import { getUserQueueManagerByUserName } from "../models/user"
+import { getUserEventByUserName, getUserQueueManagerByUserName } from "../models/user"
 
 export const addToQueue = (req: Request, res: Response) => {
   const { action: actionType } = req.body
 
   const queueManager = getUserQueueManagerByUserName(req.user.name)
+  const event = getUserEventByUserName(req.user.name)
 
   const action = queueManager.actions.find((action) => action.type === actionType)
 
@@ -28,6 +28,7 @@ export const displayQueue = (req: Request, res: Response) => {
 
 export const eventEmitter = (req: Request, res: Response) => {
   const queueManager = getUserQueueManagerByUserName(req.user.name)
+  const event = getUserEventByUserName(req.user.name)
 
   // Définir les en-têtes appropriés pour EventSource
   res.setHeader("Content-Type", "text/event-stream")
@@ -36,14 +37,12 @@ export const eventEmitter = (req: Request, res: Response) => {
 
   res.write(`data: ${JSON.stringify(queueManager)}\n\n`)
 
-  // Envoyer des mises à jour à l'événement toutes les 2 secondes
-  const intervalId = setInterval(() => {
+  event.on("update", () => {
+    console.log("Event catch")
     res.write(`data: ${JSON.stringify(queueManager)}\n\n`)
-  }, QueueManager.DELAY_ACTONS)
+  })
 
-  // Gérer la déconnexion du client
   req.on("close", () => {
-    clearInterval(intervalId)
     res.end()
   })
 }
