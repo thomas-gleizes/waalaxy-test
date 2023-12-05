@@ -12,6 +12,6 @@ router.use(jwtHandler)
 router.use("/auth", authRoutes)
 router.use("/queue", queueRoutes)
 
-router.use("*", errorHandler)
+router.use(errorHandler)
 
 export default router

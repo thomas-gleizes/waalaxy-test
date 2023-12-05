@@ -30,11 +30,3 @@ export const register = async (req: Request, res: Response) => {
 
   return res.status(201).json({ user, token: await signToken(user) })
 }
-
-export const logout = (req: Request, res: Response) => {
-  // todo fix req.user
-  // @ts-ignore
-  removeUser(req.user)
-
-  return res.status(204).redirect("/connexion")
-}
