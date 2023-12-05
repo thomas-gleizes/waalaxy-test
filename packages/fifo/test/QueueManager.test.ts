@@ -57,7 +57,7 @@ describe("QueueManager", async () => {
     expect(actionB.credits).toBe(initialCreditsB - 1)
   })
 
-  test("shouldn't add action twice", async () => {
+  test("shouldn't add same type of action twice", async () => {
     queueManager.addAction("A", 10)
 
     expect(() => queueManager.addAction("A", 10)).toThrowError(FifoException)
