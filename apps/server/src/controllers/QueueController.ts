@@ -14,7 +14,7 @@ export const addToQueue = (req: Request, res: Response) => {
 
   queueManager.addToQueue(action)
 
-  event.emit("update")
+  // event.emit("update")
 
   res.status(201).json(queueManager)
 }
@@ -39,12 +39,15 @@ export const eventEmitter = (req: Request, res: Response) => {
 
   res.write(`data: ${JSON.stringify(queueManager)}\n\n`)
 
-  event.on("update", () => {
-    console.log("Event catch")
+  const listener = () => {
+    console.log("Event Catch")
     res.write(`data: ${JSON.stringify(queueManager)}\n\n`)
-  })
+  }
+
+  event.on("update", listener)
 
   req.on("close", () => {
+    event.off("update", listener)
     res.end()
   })
 }
