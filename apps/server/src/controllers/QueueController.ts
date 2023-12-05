@@ -14,6 +14,8 @@ export const addToQueue = (req: Request, res: Response) => {
 
   queueManager.addToQueue(action)
 
+  event.emit("update")
+
   res.status(201).json(queueManager)
 }
 

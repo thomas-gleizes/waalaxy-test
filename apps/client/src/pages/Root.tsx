@@ -27,8 +27,10 @@ const Root = () => {
       })}
     >
       <Outlet />
-      <div className={css({ pos: "absolute", bottom: "0", left: 0, py: 2, px: 5 })}>
-        <button onClick={handleClear}>Clear</button>
+      <div className={css({ pos: "absolute", bottom: "0", left: 0 })}>
+        <div className={css({ px: 5, py: 2 })}>
+          <button onClick={handleClear}>Clear</button>
+        </div>
       </div>
     </div>
   )

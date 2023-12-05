@@ -8,7 +8,15 @@ interface Props {
 const Queue: Component<Props> = ({ queue }) => {
   return (
     <Card title={`Liste d'attentes (${queue.length})`}>
-      <div className={css({ display: "flex", flexDir: "column", maxH: 700, overflowY: "auto" })}>
+      <div
+        className={css({
+          display: "flex",
+          minW: 250,
+          flexDir: "column",
+          maxH: 700,
+          overflowY: "auto",
+        })}
+      >
         {queue.length ? (
           queue.map((action, index) => (
             <div

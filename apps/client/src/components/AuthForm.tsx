@@ -1,4 +1,4 @@
-import { registerSchema, RegisterSchema, UserWithoutPassword } from "@waalaxy-test/utils"
+import { authSchema, AuthSchema, UserWithoutPassword } from "@waalaxy-test/utils"
 import { useMutation } from "@tanstack/react-query"
 import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
@@ -7,27 +7,28 @@ import { css } from "../../styled-system/css"
 import { httpClient } from "../services/api.ts"
 import { useAuthStore } from "../stores/auth.ts"
 import Field from "./common/Field.tsx"
+import FieldError from "./common/FieldError.tsx"
 
-const FieldError: Component<{ error: any }> = ({ error }) => {
-  if (!error) return null
-
-  return <div className={css({ color: "red", fontSize: "sm" })}>{error.message}</div>
+interface Props {
+  action: "login" | "register"
 }
 
-const LoginForm: Component = () => {
+const AuthForm: Component<Props> = ({ action }) => {
   const {
     handleSubmit,
     register,
     formState: { errors },
-  } = useForm<RegisterSchema>({
-    resolver: zodResolver(registerSchema),
+  } = useForm<AuthSchema>({
+    resolver: zodResolver(authSchema),
   })
   const login = useAuthStore((state) => state.login)
 
   const mutation = useMutation({
     mutationKey: ["auth", "register"],
-    mutationFn: (payload: RegisterSchema) =>
-      httpClient.post("auth/register", { body: JSON.stringify(payload) }),
+    mutationFn: (payload: AuthSchema) =>
+      httpClient.post(action === "register" ? "auth/register" : "auth/login", {
+        body: JSON.stringify(payload),
+      }),
     onSuccess: async (response) => {
       const data = (await response.json()) satisfies { token: string; user: UserWithoutPassword }
 
@@ -68,4 +69,4 @@ const LoginForm: Component = () => {
   )
 }
 
-export default LoginForm
+export default AuthForm

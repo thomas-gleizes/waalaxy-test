@@ -48,7 +48,7 @@ const HomePage = () => {
   }
 
   return (
-    <div>
+    <div className={css({ w: "full", display: "flex" })}>
       {status === "ready" ? (
         <div
           className={css({
