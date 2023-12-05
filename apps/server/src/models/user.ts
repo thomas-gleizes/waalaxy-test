@@ -2,6 +2,7 @@ import { QueueManager } from "@waalaxy-test/fifo"
 import { User } from "@waalaxy-test/utils"
 import { createQueueManager } from "../services/queueManager"
 import { EventQueue } from "../services/event"
+import Exception from "../exceptions/Exception"
 
 type ItemDB = {
   queueManager: QueueManager
@@ -10,11 +11,21 @@ type ItemDB = {
 
 const userDb: Map<User, ItemDB> = new Map()
 
+const searchUser = (username: string) => {
+  return Array.from(userDb.keys()).find((user) => user.name === username)
+}
+
 export const findUserByName = (name: string) => {
-  return Array.from(userDb.keys()).find((user) => user.name === name)
+  const user = searchUser(name)
+
+  if (!user) return undefined
+
+  return { ...user }
 }
 
 export const addUser = (user: User): User => {
+  if (searchUser(user.name)) throw new Exception("User already exists")
+
   const queueManager = createQueueManager()
   const event = new EventQueue()
 
@@ -25,19 +36,13 @@ export const addUser = (user: User): User => {
     event.emit("update")
   }, 1000 * 3)
 
-  return user
-}
-
-export const removeUser = (user: User): User => {
-  userDb.delete(user)
-
-  return user
+  return { ...user }
 }
 
 export const getUserQueueManagerByUserName = (name: string) => {
-  return userDb.get(findUserByName(name)).queueManager
+  return userDb.get(searchUser(name)).queueManager
 }
 
 export const getUserEventByUserName = (name: string) => {
-  return userDb.get(findUserByName(name)).event
+  return userDb.get(searchUser(name)).event
 }

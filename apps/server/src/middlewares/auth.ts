@@ -4,8 +4,8 @@ import { UnauthorizedException } from "../exceptions/http/UnauthorizedException"
 import { findUserByName } from "../models/user"
 
 export const authHandler = (req: Request, res: Response, next: NextFunction) => {
-  if (!req.user) throw new UnauthorizedException("Access denied 1")
-  if (!findUserByName(req.user.name)) throw new UnauthorizedException("Access denied 2")
+  if (!req.user) next(new UnauthorizedException("Access denied"))
+  if (!findUserByName(req.user.name)) next(new UnauthorizedException("Access denied"))
 
   next()
 }
