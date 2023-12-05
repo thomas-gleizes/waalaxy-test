@@ -1,15 +1,18 @@
-import { expect, describe, test } from "vitest"
-import { QueueManager } from "../src"
+import { expect, describe, test, beforeEach } from "vitest"
+import { FifoException, QueueManager } from "../src"
 
 describe("QueueManager", async () => {
+  let queueManager: QueueManager
+
+  beforeEach(() => {
+    queueManager = new QueueManager()
+  })
+
   test("should init", async () => {
-    const queueManager = new QueueManager()
     expect(queueManager).toBeDefined()
   })
 
   test("should add action correctly", async () => {
-    const queueManager = new QueueManager()
-
     const action = queueManager.addAction("A", 10)
 
     expect(action).toBeDefined()
@@ -19,7 +22,6 @@ describe("QueueManager", async () => {
   })
 
   test("should add many action correctly", async () => {
-    const queueManager = new QueueManager()
     const actionA = queueManager.addAction("A", 10)
     const actionB = queueManager.addAction("B", 10)
 
@@ -29,7 +31,6 @@ describe("QueueManager", async () => {
   })
 
   test("should add action to queue correctly", async () => {
-    const queueManager = new QueueManager()
     const actionA = queueManager.addAction("A", 10)
     const actionB = queueManager.addAction("B", 10)
 
@@ -54,5 +55,12 @@ describe("QueueManager", async () => {
     expect(queueManager.queue.length).toBe(0)
     expect(actionA.credits).toBe(initialCreditsA - 2)
     expect(actionB.credits).toBe(initialCreditsB - 1)
+  })
+
+  test("shouldn't add action twice", async () => {
+    queueManager.addAction("A", 10)
+
+    expect(() => queueManager.addAction("A", 10)).toThrowError(FifoException)
+    expect(() => queueManager.addAction("A", 20)).toThrowError(FifoException)
   })
 })
