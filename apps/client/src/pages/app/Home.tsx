@@ -16,12 +16,12 @@ const HomePage = () => {
   const [status, setStatus] = useState<"loading" | "ready" | "error">("loading")
 
   useEffect(() => {
-    const eventEmitter = new EventSource(`/api/queue/events?authToken=${authToken}`)
+    const eventSource = new EventSource(`/api/queue/events?authToken=${authToken}`)
 
-    eventEmitter.addEventListener("open", () => {
+    eventSource.addEventListener("open", () => {
       console.log("Event stream connected")
 
-      eventEmitter.addEventListener("message", (event) => {
+      eventSource.addEventListener("message", (event) => {
         const data = JSON.parse(event.data)
 
         setStatus("ready")
@@ -29,14 +29,14 @@ const HomePage = () => {
         setActions(data.actions)
       })
 
-      eventEmitter.addEventListener("error", () => {
+      eventSource.addEventListener("error", () => {
         console.log("Error connecting to event stream")
         setStatus("error")
       })
     })
 
     return () => {
-      eventEmitter.close()
+      eventSource.close()
     }
   }, [])
 

@@ -10,11 +10,13 @@
   "scripts": {
     "format": "prettier --write ./**/*.{js,jsx,ts,tsx,json}",
     "start": "npm run client:build && npm run server:start",
-    "test": "",
     "server:start": "cd apps/server && npm run start",
     "server:dev": "cd apps/server && npm run dev",
+    "server:test": "cd apps/server && npm run test",
     "client:build": "cd apps/client && npm run build",
     "client:dev": "cd apps/client && npm run dev",
+    "fifo:test": "cd packages/fifo && npm run test",
+    "test": "npm run fifo:test && npm run server:test",
     "dev": "concurrently \"npm run server:dev\" \"npm run client:dev\""
   },
   "devDependencies": {

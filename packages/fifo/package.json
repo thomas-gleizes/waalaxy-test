@@ -2,7 +2,7 @@
   "name": "@waalaxy-test/fifo",
   "main": "src/index.ts",
   "scripts": {
-    "test": "vitest"
+    "test": "vitest --run"
   },
   "dependencies": {
     "@waalaxy-test/utils": "*"

@@ -14,3 +14,5 @@ app.use(express.static("public"))
 app.use("/api", apiRoutes)
 
 app.listen(PORT, () => console.log(`server run at http://localhost:${PORT}`))
+
+export { app }
