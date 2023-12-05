@@ -9,7 +9,7 @@ interface Props {
 const Card: Component<Props> = ({ title, children }) => {
   return (
     <div className={css({ shadow: "lg", p: 5, bgColor: "gray.100", rounded: "sm" })}>
-      <div className={css({ borderBottom: "1px solid" })}>
+      <div className={css({ borderBottom: "1px solid", borderColor: "primary" })}>
         <h2 className={css({ color: "primary", fontWeight: "semibold", fontSize: "xl" })}>
           {title}
         </h2>

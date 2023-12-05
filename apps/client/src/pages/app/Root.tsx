@@ -4,7 +4,7 @@ import { Navigate, Outlet } from "react-router-dom"
 const AppRoot: Component = () => {
   const isAuthenticated = useAuthStore((store) => store.isAuthenticated)
 
-  if (isAuthenticated) {
+  if (!isAuthenticated) {
     return <Navigate to="/connexion" />
   }
 

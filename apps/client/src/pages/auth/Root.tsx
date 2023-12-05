@@ -5,7 +5,7 @@ import { useAuthStore } from "../../stores/auth.ts"
 const AuthRoot: Component = () => {
   const isAuthenticated = useAuthStore((store) => store.isAuthenticated)
 
-  if (!isAuthenticated) {
+  if (isAuthenticated) {
     return <Navigate to="/" />
   }
 

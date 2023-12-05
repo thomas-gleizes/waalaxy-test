@@ -10,6 +10,7 @@ const router = createBrowserRouter([
   {
     path: "/",
     element: <Root />,
+    errorElement: <div>Un erreur est survenue</div>,
     children: [
       {
         path: "/",
@@ -22,11 +23,11 @@ const router = createBrowserRouter([
         ],
       },
       {
-        path: "/connexion",
+        path: "/",
         element: <AuthRoot />,
         children: [
           {
-            path: "/",
+            path: "connexion",
             element: <LoginPage />,
           },
         ],
