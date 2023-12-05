@@ -20,6 +20,10 @@ const AuthForm: Component<Props> = ({ action }) => {
     formState: { errors },
   } = useForm<AuthSchema>({
     resolver: zodResolver(authSchema),
+    defaultValues: {
+      username: "thomas",
+      password: "azerty",
+    },
   })
   const login = useAuthStore((state) => state.login)
 

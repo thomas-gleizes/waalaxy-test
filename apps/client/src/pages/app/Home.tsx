@@ -3,7 +3,7 @@ import { ActionType } from "@waalaxy-test/fifo"
 
 import { css } from "../../../styled-system/css"
 import ActionList from "../../components/ActionList.tsx"
-import Queue from "../../components/Queue.tsx"
+import WaitingList from "../../components/WaitingList.tsx"
 import { useAuthStore } from "../../stores/auth.ts"
 import { httpClient } from "../../services/api.ts"
 
@@ -42,9 +42,12 @@ const HomePage = () => {
 
   const handleAddToQueue = async (action: ActionType) => {
     const payload = { action: action.type }
-    const response = await httpClient.post("queue", { body: JSON.stringify(payload) }).json()
+    const data = (await httpClient
+      .post("queue", { body: JSON.stringify(payload) })
+      .json()) satisfies { queue: string[]; actions: ActionType[] }
 
-    console.log("Response", response)
+    setQueue(data.queue)
+    setActions(data.actions)
   }
 
   return (
@@ -62,7 +65,7 @@ const HomePage = () => {
             <ActionList actions={actions} addToQueue={handleAddToQueue} />
           </div>
           <div>
-            <Queue queue={queue} />
+            <WaitingList queue={queue} />
           </div>
         </div>
       ) : status === "loading" ? (

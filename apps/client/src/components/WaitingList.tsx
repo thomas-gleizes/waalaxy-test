@@ -5,7 +5,7 @@ import Badge from "./common/Badge.tsx"
 interface Props {
   queue: string[]
 }
-const Queue: Component<Props> = ({ queue }) => {
+const WaitingList: Component<Props> = ({ queue }) => {
   return (
     <Card title={`Liste d'attentes (${queue.length})`}>
       <div
@@ -44,4 +44,4 @@ const Queue: Component<Props> = ({ queue }) => {
   )
 }
 
-export default Queue
+export default WaitingList
