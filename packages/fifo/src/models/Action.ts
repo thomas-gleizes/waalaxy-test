@@ -19,6 +19,8 @@ export class Action {
 
     this._type = type
     this._maxCredits = maxCredits
+    this._initialCredits = 0
+    this._credits = 0
 
     this.initCredits()
   }

@@ -9,8 +9,8 @@ const app = express()
 
 app.use(bodyParser.json())
 app.use(cors({ origin: "*" }))
-app.use(express.static("public"))
 
+app.use(express.static("../client"))
 app.use("/api", apiRoutes)
 
 app.listen(PORT, () => console.log(`server run at http://localhost:${PORT}`))

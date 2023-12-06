@@ -6,7 +6,7 @@
   "scripts": {
     "prepare": "panda codegen",
     "dev": "vite",
-    "build": "tsc && vite build && cp dist ../server/public -r",
+    "build": "tsc && vite build && rm -rf ../server/client && cp -R ./dist ../server/client/",
     "preview": "vite preview"
   },
   "dependencies": {
